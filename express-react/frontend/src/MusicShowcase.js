@@ -40,6 +40,13 @@ export class MusicCard extends React.Component {
 }
 
 export class PlayListCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+  }
+
+
+
   render() {
 
     return (
@@ -65,20 +72,39 @@ export class PlayListCard extends React.Component {
 }
 
 export class PlaylistShower extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {playlistsongs: []}
+  }
+
+  async getSongs() {
+    var url = 'http://localhost:3001/playlistsongs';
+    url = url + '?playlistid=' + '1';
+    var playlistsongs = []
+
+    await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
+
+      for (var i = 0; i < json.data.length; i++) {
+        playlistsongs.push(json.data[i]);
+
+      }
+      this.setState({playlistsongs: playlistsongs})
+    });
+  }
+
   render() {
     return(
       <div>
       <Grid columns = {4}>
-        <Grid.Row>
-        <Grid.Column>
+      {this.state.playlists.map(function(item) {
+        return(
+          <Grid.Column>
           <MusicCard/>
-        </Grid.Column>
-        <Grid.Column>
-          <MusicCard/>
-        </Grid.Column>
-
-        </Grid.Row>
+          </Grid.Column>
+        );
+      })}
       </Grid>
+
       </div>
       );
   }
