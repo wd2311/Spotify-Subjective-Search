@@ -5,6 +5,10 @@ import {Icon, Divider, Card, Image, Input, Form, Button, Segment, Container, Hea
 import {MusicCard, PlayListCard, PlaylistShower} from './MusicShowcase';
 
 export class AccountPage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return(
 
@@ -23,24 +27,50 @@ export class AccountPage extends React.Component {
 
     <Divider/>
     <Container>
-    <Grid columns = {5}>
-    <Grid.Row>
-    <Grid.Column>
-    <PlayListCard/>
-    </Grid.Column>
-    <Grid.Column>
-    <PlayListCard/>
-    </Grid.Column>
-    <Grid.Column>
-    <PlayListCard/>
-    </Grid.Column>
-
-    </Grid.Row>
-    </Grid>
+    <PlaylistDisplay app ={this}/>
     </Container>
     </div>
   );
   }
+}
+
+export class PlaylistDisplay extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { playlists: []};
+  }
+  componentDidMount() {
+      this.runPlaylists();
+  }
+
+  async runPlaylists() {
+    var url = 'http://localhost:3001/userplaylists';
+    url = url + '?username=' + 'wdavid2';
+    var playlists = []
+
+    await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
+
+      for (var i = 0; i < json.data.length; i++) {
+        playlists.push(json.data[i]);
+
+      }
+      this.setState({playlists: playlists})
+    });
+  }
+  
+  render() { return(
+  <Grid columns = {5}>
+  {this.state.playlists.map(function(item) {
+    return(
+      <Grid.Column>
+      <PlayListCard/>
+      </Grid.Column>
+    );
+  })}
+  </Grid>
+)
+}
+
 }
 
 class AddPlaylist extends React.Component {

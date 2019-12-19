@@ -42,6 +42,40 @@ app.get('/subsim', function(req, res, next) {
   // res.send({data: result});
 });
 
+app.get('/userplaylists', function(req, res, next) {
+  var username = req.query.username;
+  var sql = "SELECT * FROM UserPlaylists WHERE Username = ?";
+  var result = null;
+  db.all(sql, [username], (err, results) => {
+    // console.log(err);
+    // console.log(results);
+    res.setHeader('Content-Type', 'application/json');
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
+    res.send({data: results});
+  });
+  // console.log(result);
+  // res.send({data: result});
+});
+app.get('/playlistsongs', function(req, res, next) {
+  var username = req.query.username;
+  var sql = "SELECT * FROM PlaylistSongs, acoustic_features WHERE Username = ?";
+  var result = null;
+  db.all(sql, [username], (err, results) => {
+    // console.log(err);
+    // console.log(results);
+    res.setHeader('Content-Type', 'application/json');
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
+    res.send({data: results});
+  });
+  // console.log(result);
+  // res.send({data: result});
+});
+
+
 module.exports = app;
 
 
