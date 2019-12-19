@@ -50,7 +50,6 @@ export class Login extends React.Component {
       <Divider/>
         <Grid centered colums = {5}>
          <Image src = "https://thumbs.gfycat.com/WhiteShadowyAsianelephant-size_restricted.gif" size = "medium"/>
-
             <Grid.Row centered columns = {2}>
                   <Header as='h1'>THE MUSIC APP</Header>
                   <Header as = 'h5'> A proprietary music discovery app, allowing users to create unique, exciting playlists </Header>
