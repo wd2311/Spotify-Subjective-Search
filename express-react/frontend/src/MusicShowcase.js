@@ -170,7 +170,18 @@ export class PlaylistShower extends React.Component {
       {this.state.playlistsongs.map(function(item) {
         return(
           <Grid.Column>
-          <MusicCard name = {item.song} artist = {item.artist}/>
+          {/* <MusicCard name = {item.song} artist = {item.artist}/> */}
+          <Card>
+            <Card.Content>
+              <Card.Header>{item.song}</Card.Header>
+              {/* <Card.Meta>
+                <span className='date'>by {item.artist}</span>
+              </Card.Meta> */}
+            </Card.Content>
+            <Card.Content>
+              <span className='date'>by {item.artist}</span>
+            </Card.Content>
+          </Card>
           <Button onClick = {() => this.deleteSongs(item.id)}> DELETE</Button>
           </Grid.Column>
         );
