@@ -17,7 +17,7 @@ export class MusicCard extends React.Component {
             <span className='date'>by {this.props.artist}</span>
           </Card.Meta>
           <Card.Description>
-            {((this.props.duration_ms / 1000) / 60).toFixed(0)}:{(((this.props.duration_ms / 1000) % 60).toFixed(0) > 10) ? ((this.props.duration_ms / 1000) % 60).toFixed(0) : ("0" + String(((this.props.duration_ms / 1000) % 60).toFixed(0)))} <br/> <br/>
+            {((this.props.duration_ms / 1000) / 60).toFixed(0)}:{(((this.props.duration_ms / 1000) % 60).toFixed(0) > 9) ? ((this.props.duration_ms / 1000) % 60).toFixed(0) : ("0" + String(((this.props.duration_ms / 1000) % 60).toFixed(0)))} <br/> <br/>
             {this.props.diffAc} <br/>
             {this.props.diffDa} <br/>
             {this.props.diffEn} <br/>
