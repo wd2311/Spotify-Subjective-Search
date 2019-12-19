@@ -1,6 +1,7 @@
 import React from 'react';
 import {Divider, Button, Container, Header, Grid, Table } from 'semantic-ui-react';
 import Slider from 'react-input-slider';
+import {MusicCard} from './MusicShowcase';
 
 // export class SliderSetter extends React.Component {
 //   constructor(props) {
@@ -60,7 +61,7 @@ export class Explore extends React.Component {
         <Divider />
         <Container>
           <Grid columns={4} divided>
-          
+
             <Grid.Column>
               <div>
                 <Slider axis="x" x={this.state.acousticness} onChange={({ x }) => this.setState({acousticness: x})} />
@@ -122,38 +123,15 @@ export class Explore extends React.Component {
           <Button onClick={() => {this.runSearch();}}>Run Search</Button>
 
           {this.state.songs.length > 0 &&
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Song Name</Table.HeaderCell>
-                <Table.HeaderCell>difference in Acousticness</Table.HeaderCell>
-                <Table.HeaderCell>difference in Danceability</Table.HeaderCell>
-                <Table.HeaderCell>difference in Energy</Table.HeaderCell>
-                <Table.HeaderCell>difference in Instrumentalness</Table.HeaderCell>
-                <Table.HeaderCell>difference in Liveness</Table.HeaderCell>
-                <Table.HeaderCell>difference in Loudness</Table.HeaderCell>
-                <Table.HeaderCell>difference in Speechiness</Table.HeaderCell>
-                <Table.HeaderCell>difference in Valence</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
+          <Grid columns = {3}>
               {this.state.songs.map(function(item) {
                 return (
-                  <Table.Row>
-                    <Table.Cell>{item.song}</Table.Cell>
-                    <Table.Cell>{item.diffAc.toFixed(3)}</Table.Cell>
-                    <Table.Cell>{item.diffDa.toFixed(3)}</Table.Cell>
-                    <Table.Cell>{item.diffEn.toFixed(3)}</Table.Cell>
-                    <Table.Cell>{item.diffIn.toFixed(3)}</Table.Cell>
-                    <Table.Cell>{item.diffLi.toFixed(3)}</Table.Cell>
-                    <Table.Cell>{item.diffLo.toFixed(3)}</Table.Cell>
-                    <Table.Cell>{item.diffSp.toFixed(3)}</Table.Cell>
-                    <Table.Cell>{item.diffVa.toFixed(3)}</Table.Cell>
-                  </Table.Row>
+                  <Grid.Column>
+                  <MusicCard name={item.song}/>
+                  </Grid.Column>
                 );
               })}
-            </Table.Body>
-          </Table>
+          </Grid>
           }
         </Container>
         <Divider/>
