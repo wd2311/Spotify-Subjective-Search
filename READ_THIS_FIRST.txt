@@ -1,0 +1,8 @@
+The db file is not included in this zip submission.
+Here is a google drive link to a zip file that does
+include it:
+https://drive.google.com/file/d/1wDLhuoFlcDBVa5hoKEnraYO9tIIyF3E-/view?usp=sharing
+
+This file, as explained in the write-up, needs to be
+placed at the root, next to the "express-react/" folder
+and this file.
