@@ -5,7 +5,7 @@ var app = express();
 var cors = require('cors');
 app.use(cors());
 const sqlite = require('sqlite3');
-const db = new sqlite.Database('../../billboard-200.db', (err) => console.log(err));
+const db = new sqlite.Database('../../billboard-200.db', (err) => {});
 
 // ROUTES
 
