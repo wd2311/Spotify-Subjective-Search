@@ -27,7 +27,7 @@ app.get('/subsim', function(req, res, next) {
   var loudness = parseFloat(req.query.loudness);
   var speechiness = parseFloat(req.query.speechiness);
   var valence = parseFloat(req.query.valence);
-  var sql = "SELECT AF.song, AF.artist, AF.date, AF.duration_ms, abs(AF.acousticness - ?) as diffAc, abs(AF.danceability - ?) as diffDa, abs(AF.energy - ?) as diffEn, abs(AF.instrumentalness - ?) as diffIn, abs(AF.liveness - ?) as diffLi, abs(AF.loudness/60.0 - ?/60.0) as diffLo, abs(AF.speechiness - ?) as diffSp, abs(AF.valence - ?) as diffVa FROM acoustic_features AF ORDER BY (diffAc*diffAc + diffDa*diffDa + diffEn*diffEn + diffIn*diffIn + diffLi*diffLi + diffLo*diffLo + diffSp*diffSp + diffVa*diffVa) ASC LIMIT 20;";
+  var sql = "SELECT AF.id, AF.song, AF.artist, AF.date, AF.duration_ms, abs(AF.acousticness - ?) as diffAc, abs(AF.danceability - ?) as diffDa, abs(AF.energy - ?) as diffEn, abs(AF.instrumentalness - ?) as diffIn, abs(AF.liveness - ?) as diffLi, abs(AF.loudness/60.0 - ?/60.0) as diffLo, abs(AF.speechiness - ?) as diffSp, abs(AF.valence - ?) as diffVa FROM acoustic_features AF ORDER BY (diffAc*diffAc + diffDa*diffDa + diffEn*diffEn + diffIn*diffIn + diffLi*diffLi + diffLo*diffLo + diffSp*diffSp + diffVa*diffVa) ASC LIMIT 20;";
   var result = null;
   db.all(sql, [acoust, dance, energy, instrum, liveness, loudness, speechiness, valence], (err, results) => {
     // console.log(err);
@@ -96,7 +96,7 @@ app.get('/userplaylists', function(req, res, next) {
 });
 app.get('/playlistsongs', function(req, res, next) {
   var playlistid = parseInt(req.query.playlistid);
-  var sql = "SELECT PS.PlaylistID FROM PlaylistSongs PS, acoustic_features AF WHERE PS.PlaylistID = ? AND PS.songID = AF.id";
+  var sql = "SELECT PS.PlaylistID, AF.song FROM PlaylistSongs PS, acoustic_features AF WHERE PS.PlaylistID = ? AND PS.songID = AF.id";
   var result = null;
   db.all(sql, [playlistid], (err, results) => {
     // console.log(err);
@@ -115,9 +115,9 @@ app.post('/userplaylistsnew', function(req, res, next) {
   var username = req.query.username;
   var playlistname = req.query.playlistname;
 
-  var sql = "INSERT INTO UserPlaylists VALUES (?, 14, ?, 11);";
+  var sql = "INSERT INTO UserPlaylists VALUES (?, null, ?, null );";
   var result = null;
-  db.all(sql, [username], (err, results) => {
+  db.all(sql, [username, playlistname], (err, results) => {
     // console.log(err);
     // console.log(results);
     res.setHeader('Content-Type', 'application/json');
@@ -129,7 +129,7 @@ app.post('/userplaylistsnew', function(req, res, next) {
   // console.log(result);
   // res.send({data: result});
 });
-
+/**
 app.post('/userplaylistsnew', function(req, res, next) {
   var username = req.query.username;
   var playlistname = req.query.playlistname;
@@ -148,8 +148,9 @@ app.post('/userplaylistsnew', function(req, res, next) {
   // console.log(result);
   // res.send({data: result});
 });
+*/
 
-app.post('/userplaylistsnew', function(req, res, next) {
+app.post('/userplaylistsdelete', function(req, res, next) {
   var playlistid = req.query.playlistid;
   var sql = "DELETE FROM UserPlaylists WHERE playlistid = );";
   var result = null;
@@ -167,11 +168,11 @@ app.post('/userplaylistsnew', function(req, res, next) {
 });
 
 app.post('/addplaylistsong', function(req, res, next) {
-  var playlistid = req.query.playlistid;
+  var playlistid = parseInt(req.query.playlistid);
   var songid = req.query.songid;
   var sql = "INSERT INTO PlaylistSongs VALUES (?, ?);";
   var result = null;
-  db.all(sql, [username], (err, results) => {
+  db.all(sql, [playlistid, songid], (err, results) => {
     // console.log(err);
     // console.log(results);
     res.setHeader('Content-Type', 'application/json');

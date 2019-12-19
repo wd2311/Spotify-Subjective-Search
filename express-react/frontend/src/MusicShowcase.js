@@ -4,10 +4,10 @@ import {Card, Image,Icon, Input, Form, Button, Segment, Container, Header, Grid,
 export class MusicCard extends React.Component {
   constructor(props) {
     super(props);
+
   }
 
   render() {
-
     return (
       <Card>
         {/* <Image src='https://upload.wikimedia.org/wikipedia/commons/c/ca/CD-ROM.png' wrapped ui={false} /> */}
@@ -31,7 +31,7 @@ export class MusicCard extends React.Component {
         <Card.Content extra>
         <Modal trigger = {<Button> Add to Playlist </Button>}>
         <Modal.Content>
-        <PlaylistSelector/>
+        <PlaylistSelector user = {this.props.user} song = {this.props.songid}/>
         </Modal.Content>
         </Modal>
         </Card.Content>
@@ -49,7 +49,7 @@ export class PlaylistSelector extends React.Component {
   }
   async runPlaylists() {
     var url = 'http://localhost:3001/userplaylists';
-    url = url + '?username=' + 'wdavid2';
+    url = url + '?username=' + this.props.user;
     var playlists = []
 
     await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
@@ -65,6 +65,15 @@ export class PlaylistSelector extends React.Component {
       this.runPlaylists();
   }
 
+  async addSongToPlaylist(playlistID) {
+    var url = 'http://localhost:3001/addplaylistsong';
+    url = url + '?playlistid=' + playlistID;
+    url = url + '&songid=' + this.props.song;
+
+    await fetch(url, { method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
+    });
+  }
+
   test() {
     alert("hey");
   }
@@ -74,10 +83,10 @@ export class PlaylistSelector extends React.Component {
   {this.state.playlists.map(function(item) {
     return(
       <Grid.Column>
-      <Button onClick = {this.test}> {item.PlaylistName}</Button>
+      <Button onClick = {() => this.addSongToPlaylist(item.PlaylistID)}> {item.PlaylistName}</Button>
       </Grid.Column>
     );
-  })}
+  }, this)}
   </Grid>
 )
 }
@@ -95,11 +104,10 @@ export class PlayListCard extends React.Component {
 
     return (
       <Card>
-        {/* <Image src='https://upload.wikimedia.org/wikipedia/commons/c/ca/CD-ROM.png' wrapped ui={false} /> */}
         <Card.Content>
-        <Modal trigger = { <Card.Header><a>PlaylistName</a></Card.Header> }>
+        <Modal trigger = { <Card.Header><a>{this.props.playlistname}</a></Card.Header> }>
         <Modal.Content>
-          <PlaylistShower/>
+          <PlaylistShower playlistid = {this.props.playlistid}/>
         </Modal.Content>
         </Modal>
           <Card.Meta>
@@ -130,7 +138,7 @@ export class PlaylistShower extends React.Component {
     this.setState({playlistsongs: []})
 
     var url = 'http://localhost:3001/playlistsongs';
-    url = url + '?playlistid=' + '1';
+    url = url + '?playlistid=' + this.props.playlistid;
     var playlistsongs = []
 
     await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
@@ -148,7 +156,7 @@ export class PlaylistShower extends React.Component {
       {this.state.playlistsongs.map(function(item) {
         return(
           <Grid.Column>
-          <MusicCard/>
+          <MusicCard name = {item.song}/>
           </Grid.Column>
         );
       })}

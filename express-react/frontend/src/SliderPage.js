@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Modal, Divider, Button, Container, Header, Grid, Table, Item } from 'semantic-ui-react';
+import {Dropdown, Image, Modal, Divider, Button, Container, Header, Grid, Table, Item } from 'semantic-ui-react';
 import Slider from 'react-input-slider';
 import {MusicCard} from './MusicShowcase';
 
@@ -20,10 +20,73 @@ import {MusicCard} from './MusicShowcase';
 //   }
 // }
 
+const keys = [
+  {
+    key: 0,
+    text: "C",
+    value: 0,
+  },
+  {
+    key: 1,
+    text: "C#",
+    value: 1,
+  },
+  {
+    key: 2,
+    text: "D",
+    value: 2,
+  },
+  {
+    key: 3,
+    text: "D#",
+    value: 3,
+  },
+  {
+    key: 4,
+    text: "E",
+    value: 4,
+  },
+  {
+    key: 5,
+    text: "F",
+    value: 5,
+  },
+  {
+    key: 6,
+    text: "F#",
+    value: 6,
+  },
+  {
+    key: 7,
+    text: "G",
+    value: 7,
+  },
+  {
+    key: 8,
+    text: "G#",
+    value: 8,
+  },
+  {
+    key: 9,
+    text: "A",
+    value: 9,
+  },
+  {
+    key: 10,
+    text: "A#",
+    value: 10,
+  },
+  {
+    key: 11,
+    text: "B",
+    value: 11,
+  },
+]
+
 export class Explore extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {acousticness: 50, danceability: 50, energy: 50, instrumentalness: 50, liveness: 50, loudness: 50, speechiness: 50, valence: 50, songs: []};
+    this.state = {acousticness: 50, danceability: 50, energy: 50, instrumentalness: 50, liveness: 50, loudness: 50, speechiness: 50, valence: 50, tempo: 100, key: -1, songs: []};
   }
 
   async runSearch() {
@@ -57,6 +120,7 @@ export class Explore extends React.Component {
     this.setState({songs: newSongs});
     console.log(this.state.songs);
   }
+
 
   render() {
     return (
@@ -177,7 +241,25 @@ Speechiness detects the presence of spoken words in a track. The more exclusivel
 </Modal>
               </div>
             </Grid.Column>
+            <Grid.Row columns = {2}>
+            <Grid.Column>
+            <Header>Tempo</Header>
+            <Slider axis="x" x={this.state.tempo} onChange={({ x }) => this.setState({tempo: x})} />
+            <Header as='h6'>{this.state.tempo }</Header>
 
+            </Grid.Column>
+            <Grid.Column>
+            <Header>Key</Header>
+
+            <Dropdown placeholder = "Select Key"
+            fluid
+            selection
+            options = {keys}
+            onChange = {(e, {value}) => this.setState({key: value})}
+            />
+            </Grid.Column>
+
+            </Grid.Row>
           </Grid>
           <Divider />
           <Button onClick={() => {this.runSearch();}}>Run Search</Button>
@@ -188,6 +270,8 @@ Speechiness detects the presence of spoken words in a track. The more exclusivel
                 return (
                   <Grid.Column key={item.song}>
                   <MusicCard
+                  user = {this.props.app.state.user}
+                  songid = {item.id}
                     name={item.song}
                     artist={item.artist}
                     date={item.date}
@@ -203,7 +287,7 @@ Speechiness detects the presence of spoken words in a track. The more exclusivel
                   />
                   </Grid.Column>
                 );
-              })}
+              }, this)}
           </Grid>
           }
         </Container>

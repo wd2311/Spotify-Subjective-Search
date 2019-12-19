@@ -26,7 +26,7 @@ export class Login extends React.Component {
                 console.log(json.data);
             }
         });
-    }  
+    }
   }
 
   async handleSignup() {
@@ -41,7 +41,7 @@ export class Login extends React.Component {
                 console.log(json.data);
             }
         });
-    }  
+    }
   }
 
   render() {

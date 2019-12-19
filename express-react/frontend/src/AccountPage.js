@@ -13,13 +13,14 @@ export class AccountPage extends React.Component {
     return(
 
     <div>
-    <Icon name = 'user'/>
 
     <Header as='h1'> Account</Header>
-    <Header as='h2'> USERNAME</Header>
+    <Icon name = 'user'/>
+
+    <Header as='h2'> {this.props.app.state.user}</Header>
     <Modal trigger = {<Button> New Playlist</Button>}>
       <Modal.Content>
-        <AddPlaylist/>
+        <AddPlaylist user = {this.props.app.state.user} />
       </Modal.Content>
     </Modal>
 
@@ -27,7 +28,7 @@ export class AccountPage extends React.Component {
 
     <Divider/>
     <Container>
-    <PlaylistDisplay app ={this}/>
+    <PlaylistDisplay app ={this} user = {this.props.app.state.user}/>
     </Container>
     </div>
   );
@@ -45,7 +46,7 @@ export class PlaylistDisplay extends React.Component {
 
   async runPlaylists() {
     var url = 'http://localhost:3001/userplaylists';
-    url = url + '?username=' + 'wdavid2';
+    url = url + '?username=' + this.props.user;
     var playlists = []
 
     await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
@@ -63,7 +64,7 @@ export class PlaylistDisplay extends React.Component {
   {this.state.playlists.map(function(item) {
     return(
       <Grid.Column>
-      <PlayListCard/>
+      <PlayListCard playlistid = {item.PlaylistID} playlistname = {item.PlaylistName}/>
       </Grid.Column>
     );
   })}
@@ -82,8 +83,8 @@ class AddPlaylist extends React.Component {
 
   async addThePlaylist() {
     var url = 'http://localhost:3001/userplaylistsnew';
-    url = url + '?username=' + 'ANTHISNDf' ;
-    url = url + '&playlistname=' + 'HEY';
+    url = url + '?username=' + this.props.user ;
+    url = url + '&playlistname=' + this.state.name;
     await fetch(url, {method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
       console.log(json);
     });
