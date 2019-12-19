@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Divider, Button, Container, Header, Grid, Table, Item } from 'semantic-ui-react';
+import {Image, Modal, Divider, Button, Container, Header, Grid, Table, Item } from 'semantic-ui-react';
 import Slider from 'react-input-slider';
 import {MusicCard} from './MusicShowcase';
 
@@ -35,7 +35,7 @@ export class Explore extends React.Component {
     url = url + "&energy=" + String((this.state.energy / 100));
     url = url + "&instrumentalness=" + String((this.state.instrumentalness / 100));
     url = url + "&liveness=" + String((this.state.liveness / 100));
-    url = url + "&loudness=" + String((this.state.loudness / 100) * -60);
+    url = url + "&loudness=" + String((1-(this.state.loudness / 100)) * -60);
     url = url + "&speechiness=" + String((this.state.speechiness / 100));
     url = url + "&valence=" + String((this.state.valence / 100));
     // console.log(url);
@@ -68,6 +68,8 @@ export class Explore extends React.Component {
 
             <Grid.Column>
               <div>
+                <Image src = "https://developer.spotify.com/assets/audio/acousticness.png"/>
+
                 <Slider axis="x" x={this.state.acousticness} onChange={({ x }) => this.setState({acousticness: x})} />
                 <Header as='h6'>{this.state.acousticness * .01}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Acousticness</a></Header>}>
@@ -79,6 +81,8 @@ export class Explore extends React.Component {
               </div>
               <Divider />
               <div>
+              <Image src = "https://developer.spotify.com/assets/audio/danceability.png"/>
+
                 <Slider axis="x" x={this.state.danceability} onChange={({ x }) => this.setState({danceability: x})} />
                 <Header as='h6'>{this.state.danceability * .01}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Danceability</a></Header>}>
@@ -93,6 +97,8 @@ export class Explore extends React.Component {
 
             <Grid.Column>
               <div>
+              <Image src = "https://developer.spotify.com/assets/audio/energy.png"/>
+
                 <Slider axis="x" x={this.state.energy} onChange={({ x }) => this.setState({energy: x})} />
                 <Header as='h6'>{this.state.energy * .01}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Energy</a></Header>}>
@@ -103,6 +109,8 @@ export class Explore extends React.Component {
               </div>
               <Divider />
               <div>
+              <Image src = "https://developer.spotify.com/assets/audio/instrumentalness.png"/>
+
                 <Slider axis="x" x={this.state.instrumentalness} onChange={({ x }) => this.setState({instrumentalness: x})} />
                 <Header as='h6'>{this.state.instrumentalness * .01}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Instrumentalness</a></Header>}>
@@ -116,6 +124,8 @@ export class Explore extends React.Component {
 
             <Grid.Column>
               <div>
+              <Image src = "https://developer.spotify.com/assets/audio/liveness.png"/>
+
                 <Slider axis="x" x={this.state.liveness} onChange={({ x }) => this.setState({liveness: x})} />
                 <Header as='h6'>{this.state.liveness * .01}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Liveness</a></Header>}>
@@ -127,8 +137,10 @@ export class Explore extends React.Component {
               </div>
               <Divider />
               <div>
+              <Image src = "https://developer.spotify.com/assets/audio/loudness.png"/>
+
                 <Slider axis="x" x={this.state.loudness} onChange={({ x }) => this.setState({loudness: x})} />
-                <Header as='h6'>{(this.state.loudness * .01 * -60).toFixed(3)}</Header>
+                <Header as='h6'>{((1-(this.state.loudness / 100)) * -60).toFixed(3)}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Loudness</a></Header>}>
                     <Modal.Header>Loudness </Modal.Header>
                     <Modal.Content>
@@ -140,6 +152,8 @@ export class Explore extends React.Component {
 
             <Grid.Column>
               <div>
+              <Image src = "https://developer.spotify.com/assets/audio/speechiness.png"/>
+
                 <Slider axis="x" x={this.state.speechiness} onChange={({ x }) => this.setState({speechiness: x})} />
                 <Header as='h6'>{this.state.speechiness * .01}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Speechiness</a></Header>}>
@@ -151,6 +165,8 @@ Speechiness detects the presence of spoken words in a track. The more exclusivel
               </div>
               <Divider />
               <div>
+              <Image src = "https://developer.spotify.com/assets/audio/valence.png"/>
+
                 <Slider axis="x" x={this.state.valence} onChange={({ x }) => this.setState({valence: x})} />
                 <Header as='h6'>{this.state.valence * .01}</Header>
                 <Modal size = "small" trigger = {<Header as='h4'> <a>Valence</a></Header>}>
