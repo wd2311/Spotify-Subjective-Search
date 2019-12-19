@@ -23,7 +23,7 @@ export class MenuExampleBasic extends Component {
         >
           Explore
         </Menu.Item>
-
+        <Menu.Menu position = "right">
         <Menu.Item
           name='account'
           active={activeItem === 'reviews'}
@@ -31,8 +31,8 @@ export class MenuExampleBasic extends Component {
         >
           Account
         </Menu.Item>
-
-        <Menu.Item position = 'right' onClick= {this.handleSignOut} style={{paddingLeft: '15px'}}>Sign Out</Menu.Item>
+        <Menu.Item  onClick= {this.handleSignOut} style={{paddingLeft: '15px'}}>Sign Out</Menu.Item>
+        </Menu.Menu>
 
       </Menu>
     )

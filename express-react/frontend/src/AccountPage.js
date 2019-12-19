@@ -57,7 +57,7 @@ export class PlaylistDisplay extends React.Component {
       this.setState({playlists: playlists})
     });
   }
-  
+
   render() { return(
   <Grid columns = {5}>
   {this.state.playlists.map(function(item) {
@@ -81,7 +81,13 @@ class AddPlaylist extends React.Component {
   }
 
   async addThePlaylist() {
-    console.log(this.state);
+    var url = 'http://localhost:3001/userplaylistsnew';
+    url = url + '?username=' + 'ANTHISNDf' ;
+    url = url + '&playlistname=' + 'HEY';
+    await fetch(url, {method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
+      alert("HEY");
+    });
+
   }
 
   render() {
@@ -108,10 +114,10 @@ class AddPlaylist extends React.Component {
           id='descriptionField'
           onChange={()=>{this.setState({description: document.getElementById('descriptionField').value})}}
         />
-      
+
       <Divider/>
       <Divider clearing />
-      
+
       <Grid centered columns = {2}>
         <Button onClick={() => {this.addThePlaylist();}}> Submit </Button>
       </Grid>

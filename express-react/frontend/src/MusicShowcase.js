@@ -29,16 +29,60 @@ export class MusicCard extends React.Component {
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
-          <a>
-            <Icon name='user' />
-            {this.props.date}
-          </a>
+        <Modal trigger = {<Button> Add to Playlist </Button>}>
+        <Modal.Content>
+        <PlaylistSelector/>
+        </Modal.Content>
+        </Modal>
         </Card.Content>
       </Card>
     );
   }
 }
 
+export class PlaylistSelector extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { playlists: []};
+    this.test = this.test.bind(this);
+
+  }
+  async runPlaylists() {
+    var url = 'http://localhost:3001/userplaylists';
+    url = url + '?username=' + 'wdavid2';
+    var playlists = []
+
+    await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
+
+      for (var i = 0; i < json.data.length; i++) {
+        playlists.push(json.data[i]);
+
+      }
+      this.setState({playlists: playlists})
+    });
+  }
+  componentDidMount() {
+      this.runPlaylists();
+  }
+
+  test() {
+    alert("hey");
+  }
+
+  render() { return(
+  <Grid columns = {5}>
+  {this.state.playlists.map(function(item) {
+    return(
+      <Grid.Column>
+      <Button onClick = {this.test}> {item.PlaylistName}</Button>
+      </Grid.Column>
+    );
+  })}
+  </Grid>
+)
+}
+
+}
 export class PlayListCard extends React.Component {
   constructor(props) {
     super(props);
@@ -75,18 +119,23 @@ export class PlaylistShower extends React.Component {
   constructor(props) {
     super(props);
     this.state = {playlistsongs: []}
+
+  }
+
+  componentDidMount() {
+      this.getSongs();
   }
 
   async getSongs() {
+    this.setState({playlistsongs: []})
+
     var url = 'http://localhost:3001/playlistsongs';
     url = url + '?playlistid=' + '1';
     var playlistsongs = []
 
     await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
-
       for (var i = 0; i < json.data.length; i++) {
         playlistsongs.push(json.data[i]);
-
       }
       this.setState({playlistsongs: playlistsongs})
     });
@@ -96,7 +145,7 @@ export class PlaylistShower extends React.Component {
     return(
       <div>
       <Grid columns = {4}>
-      {this.state.playlists.map(function(item) {
+      {this.state.playlistsongs.map(function(item) {
         return(
           <Grid.Column>
           <MusicCard/>
