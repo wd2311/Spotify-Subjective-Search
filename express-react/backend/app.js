@@ -129,6 +129,43 @@ app.post('/userplaylistsnew', function(req, res, next) {
   // console.log(result);
   // res.send({data: result});
 });
+
+app.post('/addplaylistsong', function(req, res, next) {
+  var playlistid = req.query.playlistid;
+  var songid = req.query.songid;
+  var sql = "INSERT INTO PlaylistSongs VALUES (?, ?);";
+  var result = null;
+  db.all(sql, [username], (err, results) => {
+    // console.log(err);
+    // console.log(results);
+    res.setHeader('Content-Type', 'application/json');
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
+    res.send({data: results});
+  });
+  // console.log(result);
+  // res.send({data: result});
+});
+
+app.post('/removeplaylistsong', function(req, res, next) {
+  var playlistid = req.query.playlistid;
+  var songid = req.query.songid;
+  var sql = "REMOVE FROM PlaylistSongs WHERE playlistid = ? AND songid = ?;";
+  var result = null;
+  db.all(sql, [username], (err, results) => {
+    // console.log(err);
+    // console.log(results);
+    res.setHeader('Content-Type', 'application/json');
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
+    res.send({data: results});
+  });
+  // console.log(result);
+  // res.send({data: result});
+});
+
 module.exports = app;
 
 
