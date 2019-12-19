@@ -86,7 +86,7 @@ const keys = [
 export class Explore extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {acousticness: 50, danceability: 50, energy: 50, instrumentalness: 50, liveness: 50, loudness: 50, speechiness: 50, valence: 50, tempo: 50, key: -1, songs: []};
+    this.state = {acousticness: 50, danceability: 50, energy: 50, instrumentalness: 50, liveness: 50, loudness: 50, speechiness: 50, valence: 50, tempo: 50, key: 0, songs: []};
   }
 
   async runSearch() {
@@ -259,7 +259,8 @@ Speechiness detects the presence of spoken words in a track. The more exclusivel
             <Dropdown placeholder = "Select Key"
             fluid
             selection
-            options = {keys}
+            options={keys}
+            defaultValue={0}
             onChange = {(e, {value}) => this.setState({key: value})}
             />
             </Grid.Column>
