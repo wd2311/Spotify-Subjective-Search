@@ -86,7 +86,7 @@ const keys = [
 export class Explore extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {acousticness: 50, danceability: 50, energy: 50, instrumentalness: 50, liveness: 50, loudness: 50, speechiness: 50, valence: 50, tempo: 100, key: -1, songs: []};
+    this.state = {acousticness: 50, danceability: 50, energy: 50, instrumentalness: 50, liveness: 50, loudness: 50, speechiness: 50, valence: 50, tempo: 50, key: -1, songs: []};
   }
 
   async runSearch() {
@@ -101,6 +101,9 @@ export class Explore extends React.Component {
     url = url + "&loudness=" + String((1-(this.state.loudness / 100)) * -60);
     url = url + "&speechiness=" + String((this.state.speechiness / 100));
     url = url + "&valence=" + String((this.state.valence / 100));
+    url = url + "&tempo=" + String((this.state.tempo/100) * 220);
+    url = url + "&key=" + String(this.state.key);
+
     // console.log(url);
     // const response = await fetch(url, { mode: 'cors' });
     // console.log(response);
@@ -243,9 +246,11 @@ Speechiness detects the presence of spoken words in a track. The more exclusivel
             </Grid.Column>
             <Grid.Row columns = {2}>
             <Grid.Column>
-            <Header>Tempo</Header>
+            <Image src = "https://developer.spotify.com/assets/audio/tempo.png"/>
+
+            <Header>Minimum Tempo</Header>
             <Slider axis="x" x={this.state.tempo} onChange={({ x }) => this.setState({tempo: x})} />
-            <Header as='h6'>{this.state.tempo }</Header>
+            <Header as='h6'>{(this.state.tempo/100) * 220 }</Header>
 
             </Grid.Column>
             <Grid.Column>

@@ -4,9 +4,12 @@ import {Card, Image,Icon, Input, Form, Button, Segment, Container, Header, Grid,
 export class MusicCard extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {modalopen: false}
   }
 
+  closemodal() {
+    this.setState({modalopen:false});
+  }
   render() {
     return (
       <Card>
@@ -29,9 +32,9 @@ export class MusicCard extends React.Component {
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
-        <Modal trigger = {<Button> Add to Playlist </Button>}>
+        <Modal open = {this.state.modalopen} trigger = {<Button onClick = {() => this.setState({modalopen: true})}> Add to Playlist </Button>}>
         <Modal.Content>
-        <PlaylistSelector user = {this.props.user} song = {this.props.songid}/>
+        <PlaylistSelector user = {this.props.user} song = {this.props.songid} closemodal = {()=>this.closemodal()}/>
         </Modal.Content>
         </Modal>
         </Card.Content>
@@ -72,6 +75,7 @@ export class PlaylistSelector extends React.Component {
 
     await fetch(url, { method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
     });
+    this.props.closemodal();
   }
 
   test() {
@@ -110,11 +114,8 @@ export class PlayListCard extends React.Component {
           <PlaylistShower playlistid = {this.props.playlistid}/>
         </Modal.Content>
         </Modal>
-          <Card.Meta>
-            <span className='date'>Artist</span>
-          </Card.Meta>
           <Card.Description>
-          Description
+          {this.props.description}
           </Card.Description>
         </Card.Content>
       </Card>
@@ -122,6 +123,9 @@ export class PlayListCard extends React.Component {
   }
 
 }
+
+
+
 
 export class PlaylistShower extends React.Component {
   constructor(props) {
@@ -149,6 +153,16 @@ export class PlaylistShower extends React.Component {
     });
   }
 
+  async deleteSongs(songid) {
+    var url = 'http://localhost:3001/removeplaylistsong';
+    url = url + '?playlistid=' + this.props.playlistid;
+    url = url + '&songid=' + songid;
+    await fetch(url, { method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
+
+    });
+    this.getSongs();
+  }
+
   render() {
     return(
       <div>
@@ -156,10 +170,11 @@ export class PlaylistShower extends React.Component {
       {this.state.playlistsongs.map(function(item) {
         return(
           <Grid.Column>
-          <MusicCard name = {item.song}/>
+          <MusicCard name = {item.song} artist = {item.artist}/>
+          <Button onClick = {() => this.deleteSongs(item.id)}> DELETE</Button>
           </Grid.Column>
         );
-      })}
+      }, this)}
       </Grid>
 
       </div>

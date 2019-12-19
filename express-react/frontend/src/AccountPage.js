@@ -18,11 +18,6 @@ export class AccountPage extends React.Component {
     <Icon name = 'user'/>
 
     <Header as='h2'> {this.props.app.state.user}</Header>
-    <Modal trigger = {<Button> New Playlist</Button>}>
-      <Modal.Content>
-        <AddPlaylist user = {this.props.app.state.user} />
-      </Modal.Content>
-    </Modal>
 
     <Header as='h3'> Playlists </Header>
 
@@ -38,7 +33,7 @@ export class AccountPage extends React.Component {
 export class PlaylistDisplay extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { playlists: []};
+    this.state = { playlists: [], modalopen:false};
   }
   componentDidMount() {
       this.runPlaylists();
@@ -55,20 +50,43 @@ export class PlaylistDisplay extends React.Component {
         playlists.push(json.data[i]);
 
       }
-      this.setState({playlists: playlists})
+      this.setState({playlists: playlists});
     });
   }
 
+  async deletePlaylist(playlistid) {
+    var url = 'http://localhost:3001/userplaylistsdelete';
+    url = url + '?playlistid=' + playlistid;
+    await fetch(url, { method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
+
+    });
+    this.runPlaylists();
+  }
+
+  closemodal() {
+    this.setState({modalopen: false});
+    this.runPlaylists();
+  }
+
   render() { return(
+    <Container>
+    <Modal open = {this.state.modalopen} onClose = {()=> this.runPlaylists()}trigger = {<Button onClick = {()=>this.setState({modalopen: true})}> New Playlist</Button>}>
+      <Modal.Content>
+        <AddPlaylist user = {this.props.user} closemodal = {() => this.closemodal()} />
+      </Modal.Content>
+    </Modal>
+
   <Grid columns = {5}>
   {this.state.playlists.map(function(item) {
     return(
       <Grid.Column>
-      <PlayListCard playlistid = {item.PlaylistID} playlistname = {item.PlaylistName}/>
+      <PlayListCard playlistid = {item.PlaylistID} playlistname = {item.PlaylistName} description = {item.Description}/>
+      <Button onClick = {() => this.deletePlaylist(item.PlaylistID)}> Delete Playlist</Button>
       </Grid.Column>
     );
-  })}
+  }, this)}
   </Grid>
+  </Container>
 )
 }
 
@@ -85,10 +103,12 @@ class AddPlaylist extends React.Component {
     var url = 'http://localhost:3001/userplaylistsnew';
     url = url + '?username=' + this.props.user ;
     url = url + '&playlistname=' + this.state.name;
+    url = url + '&description=' + this.state.description;
+
     await fetch(url, {method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
       console.log(json);
     });
-
+    this.props.closemodal();
   }
 
   render() {
