@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, Button, Container, Header, Grid, Table } from 'semantic-ui-react';
+import {Divider, Button, Container, Header, Grid, Table, Item } from 'semantic-ui-react';
 import Slider from 'react-input-slider';
 import {MusicCard} from './MusicShowcase';
 
@@ -46,6 +46,8 @@ export class Explore extends React.Component {
 
     var newSongs = [];
     await fetch(url, { mode: 'cors'}).then(response => response.json()).then(json => {
+      console.log(json.data);
+      console.log(json.data.length);
       for (var i = 0; i < json.data.length; i++) {
         newSongs.push(json.data[i]);
       }
@@ -121,13 +123,26 @@ export class Explore extends React.Component {
           </Grid>
           <Divider />
           <Button onClick={() => {this.runSearch();}}>Run Search</Button>
-
+          <Divider />
           {this.state.songs.length > 0 &&
           <Grid columns = {3}>
               {this.state.songs.map(function(item) {
                 return (
-                  <Grid.Column>
-                  <MusicCard name={item.song}/>
+                  <Grid.Column key={item.song}>
+                  <MusicCard
+                    name={item.song} 
+                    artist={item.artist}
+                    date={item.date}
+                    duration_ms={item.duration_ms}
+                    diffAc={"Difference in Acousticness: " + String(item.diffAc.toFixed(3))}
+                    diffDa={"Difference in Danceability: " + String(item.diffDa.toFixed(3))}
+                    diffEn={"Difference in Energy: " + String(item.diffEn.toFixed(3))}
+                    diffIn={"Difference in Instrumentalness: " + String(item.diffIn.toFixed(3))}
+                    diffLi={"Difference in Liveness: " + String(item.diffLi.toFixed(3))}
+                    diffLo={"Difference in Loudness: " + String(item.diffLo.toFixed(3))}
+                    diffSp={"Difference in Speechiness: " + String(item.diffSp.toFixed(3))}
+                    diffVa={"Difference in Valence: " + String(item.diffVa.toFixed(3))}
+                  />
                   </Grid.Column>
                 );
               })}

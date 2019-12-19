@@ -8,34 +8,43 @@ export class Login extends React.Component {
     super(props);
     this.userName = "";
     this.password = "";
-    this.state = { users: [], signedUp: null, loginFailed: null };
+    this.state = { users: [], signedUp: null, loginFailed: null, username: "", password: "" };
     this.res = null;
     this.userPassword = "";
-}
+  }
 
   handleLogin() {
-    this.props.app.setState({page: "other"});
+    // this.props.app.setState({page: "other"});
 
-    if (this.password ==="" || this.userName === "") {
+    if (this.state.password==="" || this.state.username==="") {
         // empty fields
     } else {
-        this.loginUser(this.userName, this.password).then(()=>{
-            if (this.res.status == 200) {
-                // valid user/pass
-                console.log("Logging in.");
+        // this.loginUser(this.state.username, this.state.password).then(()=>{
+        //     if (this.res.status == 200) {
+        //         // valid user/pass
+        //         console.log("Logging in.");
 
-                this.props.app.setState({page: "other"});
-                this.setState({ signedUp: null });
-                this.setState({ loginFailed: null });
-            } else {
-                // invalid user/pass
-                console.log("Invalid username or password.");
-                this.setState({ loginFailed: true });
-                this.setState({ signedUp: null });
-            }
-        });
+        //         this.props.app.setState({page: "other"});
+        //         this.setState({ signedUp: null });
+        //         this.setState({ loginFailed: null });
+        //     } else {
+        //         // invalid user/pass
+        //         console.log("Invalid username or password.");
+        //         this.setState({ loginFailed: true });
+        //         this.setState({ signedUp: null });
+        //     }
+        // });
+    }  
+  }
+
+  handleSignup() {
+    if (this.state.password==="" || this.state.username==="") {
+      
+    } else {
+
     }
-}
+  }
+
   render() {
     return (
       <Container>
@@ -45,19 +54,17 @@ export class Login extends React.Component {
                 <Grid.Column>
                     <Container textAlign = 'left'>
                         <Form>
-                            <Header>Email:</Header>
-                            <Form.Input
+                            <Header>Username:</Header>
+                            <input
                                 required={true}
-                                type='text'
-                                name='username'
-                                id="username"
+                                id='usernameField'
+                                onChange={()=>{this.setState({username: document.getElementById('usernameField').value})}}
                             />
                             <Header>Password:</Header>
-                            <Form.Input
+                            <input
                                 required={true}
-                                type='password'
-                                name='password'
-                                id="password"
+                                id='passField'
+                                onChange={()=>{this.setState({password: document.getElementById('passField').value})}}
                             />
 
                             <hr/>
@@ -73,11 +80,11 @@ export class Login extends React.Component {
                             <Message
                                 error
                                 header='Sign In Failed.'
-                                content="Invalid email or password."
+                                content="Invalid username or password."
                             />
 
-                            <Button onClick ={()=>{this.handleLogin();}}>Login</Button>
-                            <Button>Sign up</Button>
+                            <Button onClick={()=>{this.handleLogin();}}>Login</Button>
+                            <Button onClick={()=>{this.handleSignup();}}>Sign up</Button>
                         </Form>
                     </Container>
                 </Grid.Column>

@@ -44,6 +44,16 @@ export class AccountPage extends React.Component {
 }
 
 class AddPlaylist extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {name: "", description: ""}
+  }
+
+  async addThePlaylist() {
+    console.log(this.state);
+  }
+
   render() {
     return (
       <Container>
@@ -53,15 +63,27 @@ class AddPlaylist extends React.Component {
       </Grid>
 
       <Form>
-      <Header> Name of the Playlist </Header>
-      <Form.Input/>
-      <Header> Description of Playlist </Header>
-      <Form.Input/>
+        <Header> Name of the Playlist </Header>
+        {/* <Form.Input value={this.state.name} onChange={this.handleInputChange}/> */}
+        <input
+          required={true}
+          id='nameField'
+          onChange={()=>{this.setState({name: document.getElementById('nameField').value})}}
+        />
+
+        <Header> Description of Playlist </Header>
+        {/* <Form.Input/> */}
+        <input
+          required={true}
+          id='descriptionField'
+          onChange={()=>{this.setState({description: document.getElementById('descriptionField').value})}}
+        />
+      
       <Divider/>
       <Divider clearing />
+      
       <Grid centered columns = {2}>
-
-      <Button> Submit </Button>
+        <Button onClick={() => {this.addThePlaylist();}}> Submit </Button>
       </Grid>
 
       </Form>

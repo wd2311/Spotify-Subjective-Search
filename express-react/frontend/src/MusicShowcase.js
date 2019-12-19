@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Card, Image,Icon, Input, Form, Button, Segment, Container, Header, Grid, Menu, Modal, Message } from 'semantic-ui-react';
+import {Card, Image,Icon, Input, Form, Button, Segment, Container, Header, Grid, Menu, Modal, Message, Item } from 'semantic-ui-react';
 
 export class MusicCard extends React.Component {
   constructor(props) {
@@ -10,20 +10,28 @@ export class MusicCard extends React.Component {
 
     return (
       <Card>
-        <Image src='https://upload.wikimedia.org/wikipedia/commons/c/ca/CD-ROM.png' wrapped ui={false} />
+        {/* <Image src='https://upload.wikimedia.org/wikipedia/commons/c/ca/CD-ROM.png' wrapped ui={false} /> */}
         <Card.Content>
           <Card.Header>{this.props.name}</Card.Header>
           <Card.Meta>
-            <span className='date'>Artist</span>
+            <span className='date'>by {this.props.artist}</span>
           </Card.Meta>
           <Card.Description>
-          Some other information
+            {((this.props.duration_ms / 1000) / 60).toFixed(0)}:{(((this.props.duration_ms / 1000) % 60).toFixed(0) > 10) ? ((this.props.duration_ms / 1000) % 60).toFixed(0) : ("0" + String(((this.props.duration_ms / 1000) % 60).toFixed(0)))} <br/> <br/>
+            {this.props.diffAc} <br/>
+            {this.props.diffDa} <br/>
+            {this.props.diffEn} <br/>
+            {this.props.diffIn} <br/>
+            {this.props.diffLi} <br/>
+            {this.props.diffLo} <br/>
+            {this.props.diffSp} <br/>
+            {this.props.diffVa}
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
           <a>
             <Icon name='user' />
-            Song Date
+            {this.props.date}
           </a>
         </Card.Content>
       </Card>
@@ -36,7 +44,7 @@ export class PlayListCard extends React.Component {
 
     return (
       <Card>
-        <Image src='https://upload.wikimedia.org/wikipedia/commons/c/ca/CD-ROM.png' wrapped ui={false} />
+        {/* <Image src='https://upload.wikimedia.org/wikipedia/commons/c/ca/CD-ROM.png' wrapped ui={false} /> */}
         <Card.Content>
         <Modal trigger = { <Card.Header><a>PlaylistName</a></Card.Header> }>
         <Modal.Content>
