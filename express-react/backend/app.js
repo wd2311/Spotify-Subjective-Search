@@ -9,12 +9,14 @@ const db = new sqlite.Database('../../billboard-200.db', (err) => console.log(er
 
 // ROUTES
 
-// app.get('/albums5', function(req, res, next) {
-//   var lim = 5;
-//   db.all('SELECT * FROM albums LIMIT ?;', [lim], (err, results) => {
-//     res.send(results);
-//   });
-// });
+app.get('/albums5', function(req, res, next) {
+  console.log(req.query.hey);
+  var lim = 5;
+  db.all('SELECT * FROM albums LIMIT ?;', [lim], (err, results) => {
+    console.log(err);
+    res.send(results);
+  });
+});
 
 app.get('/subsim', function(req, res, next) {
   var acoust = parseFloat(req.query.acousticness);
@@ -25,14 +27,19 @@ app.get('/subsim', function(req, res, next) {
   var loudness = parseFloat(req.query.loudness);
   var speechiness = parseFloat(req.query.speechiness);
   var valence = parseFloat(req.query.valence);
-  var sql = "SELECT AF.song, AF.artist, AF.date, AF.duration_ms, abs(AF.acousticness - ?) as diffAc, abs(AF.danceability - ?) as diffDa, abs(AF.energy - ?) as diffEn, abs(AF.instrumentalness - ?) as diffIn, abs(AF.liveness - ?) as diffLi, abs(AF.loudness - ?) as diffLo, abs(AF.speechiness - ?) as diffSp, abs(AF.valence - ?) as diffVa FROM acoustic_features AF ORDER BY (diffAc*diffAc + diffDa*diffDa + diffEn*diffEn + diffIn*diffIn + diffLi*diffLi + diffLo*diffLo + diffSp*diffSp + diffVa*diffVa) ASC LIMIT 20;";
+  var sql = "SELECT AF.song, abs(AF.acousticness - ?) as diffAc, abs(AF.danceability - ?) as diffDa, abs(AF.energy - ?) as diffEn, abs(AF.instrumentalness - ?) as diffIn, abs(AF.liveness - ?) as diffLi, abs(AF.loudness - ?) as diffLo, abs(AF.speechiness - ?) as diffSp, abs(AF.valence - ?) as diffVa FROM acoustic_features AF ORDER BY (diffAc*diffAc + diffDa*diffDa + diffEn*diffEn + diffIn*diffIn + diffLi*diffLi + diffLo*diffLo + diffSp*diffSp + diffVa*diffVa) ASC LIMIT 20;";
   var result = null;
   db.all(sql, [acoust, dance, energy, instrum, liveness, loudness, speechiness, valence], (err, results) => {
+    // console.log(err);
+    // console.log(results);
     res.setHeader('Content-Type', 'application/json');
-    console.log(results);
-    console.log(err);
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
     res.send({data: results});
   });
+  // console.log(result);
+  // res.send({data: result});
 });
 
 app.get('/userplaylists', function(req, res, next) {
@@ -52,10 +59,10 @@ app.get('/userplaylists', function(req, res, next) {
   // res.send({data: result});
 });
 app.get('/playlistsongs', function(req, res, next) {
-  var username = req.query.username;
-  var sql = "SELECT * FROM PlaylistSongs, acoustic_features WHERE Username = ?";
+  var playlistid = parseInt(req.query.playlistid);
+  var sql = "SELECT PS.PlaylistID FROM PlaylistSongs PS, acoustic_features AF WHERE PS.PlaylistID = ? AND PS.songID = AF.id";
   var result = null;
-  db.all(sql, [username], (err, results) => {
+  db.all(sql, [playlistid], (err, results) => {
     // console.log(err);
     // console.log(results);
     res.setHeader('Content-Type', 'application/json');
@@ -67,8 +74,24 @@ app.get('/playlistsongs', function(req, res, next) {
   // console.log(result);
   // res.send({data: result});
 });
-
-
+/**
+app.post('/userplaylists', function(req, res, next) {
+  var playlistid = parseInt(req.query.playlistid);
+  var sql = "INSERT INTO UserPlaylists WHERE PS, acoustic_features AF WHERE PS.PlaylistID = ? AND PS.songID = AF.id";
+  var result = null;
+  db.all(sql, [playlistid], (err, results) => {
+    // console.log(err);
+    // console.log(results);
+    res.setHeader('Content-Type', 'application/json');
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
+    res.send({data: results});
+  });
+  // console.log(result);
+  // res.send({data: result});
+});
+*/
 module.exports = app;
 
 
