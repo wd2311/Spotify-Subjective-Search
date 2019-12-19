@@ -74,12 +74,14 @@ app.get('/playlistsongs', function(req, res, next) {
   // console.log(result);
   // res.send({data: result});
 });
-/**
-app.post('/userplaylists', function(req, res, next) {
-  var playlistid = parseInt(req.query.playlistid);
-  var sql = "INSERT INTO UserPlaylists WHERE PS, acoustic_features AF WHERE PS.PlaylistID = ? AND PS.songID = AF.id";
+
+app.post('/userplaylistsnew', function(req, res, next) {
+  var username = req.query.username;
+  var playlistname = req.query.playlistname;
+
+  var sql = "INSERT INTO UserPlaylists VALUES (?, 14, ?, 11);";
   var result = null;
-  db.all(sql, [playlistid], (err, results) => {
+  db.all(sql, [username], (err, results) => {
     // console.log(err);
     // console.log(results);
     res.setHeader('Content-Type', 'application/json');
@@ -91,7 +93,42 @@ app.post('/userplaylists', function(req, res, next) {
   // console.log(result);
   // res.send({data: result});
 });
-*/
+
+app.post('/userplaylistsnew', function(req, res, next) {
+  var username = req.query.username;
+  var playlistname = req.query.playlistname;
+
+  var sql = "INSERT INTO UserPlaylists VALUES (?, 14, ?, 11);";
+  var result = null;
+  db.all(sql, [username], (err, results) => {
+    // console.log(err);
+    // console.log(results);
+    res.setHeader('Content-Type', 'application/json');
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
+    res.send({data: results});
+  });
+  // console.log(result);
+  // res.send({data: result});
+});
+
+app.post('/userplaylistsnew', function(req, res, next) {
+  var playlistid = req.query.playlistid;
+  var sql = "DELETE FROM UserPlaylists WHERE playlistid = );";
+  var result = null;
+  db.all(sql, [username], (err, results) => {
+    // console.log(err);
+    // console.log(results);
+    res.setHeader('Content-Type', 'application/json');
+    //res.json({data: results});
+    // console.log("hey");
+    // result = results;
+    res.send({data: results});
+  });
+  // console.log(result);
+  // res.send({data: result});
+});
 module.exports = app;
 
 
