@@ -42,6 +42,42 @@ app.get('/subsim', function(req, res, next) {
   // res.send({data: result});
 });
 
+app.get('/login', function(req, res, next) {
+  var username = req.query.user;
+  var password = req.query.pass;
+  // console.log(username);
+  // console.log(password);
+  var sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?;"
+  db.all(sql, [username, password], (err, results) => {
+    res.setHeader('Content-Type', 'application/json');
+    // console.log(results);
+    if (results.length > 0) {
+      res.send({data: "success"});
+    } else {
+      res.send({data: "failure"});
+    }
+  });
+});
+
+app.get('/signup', function(req, res, next) {
+  var username = req.query.user;
+  var password = req.query.pass;
+  var sql = "SELECT * FROM Users WHERE Username = ?;";
+  res.setHeader('Content-Type', 'application/json');
+  db.all(sql, [username], (err, results) => {
+    var len = parseFloat(results.length);
+    console.log(len);
+    if (len > 0.99) {
+      res.send({data: "failure"});
+    } else {
+      db.all('INSERT INTO Users (Username, Password, Age, Gender, FName, LName) VALUES ("' + username + '", "' + password + '", 0, "N/A", "N/A", "N/A");', (err, results) => {
+        console.log(err);
+      });
+      res.send({data: "success"});
+    }
+  });
+});
+
 app.get('/userplaylists', function(req, res, next) {
   var username = req.query.username;
   var sql = "SELECT * FROM UserPlaylists WHERE Username = ?";

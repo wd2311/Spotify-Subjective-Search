@@ -85,7 +85,7 @@ class AddPlaylist extends React.Component {
     url = url + '?username=' + 'ANTHISNDf' ;
     url = url + '&playlistname=' + 'HEY';
     await fetch(url, {method: 'post', mode: 'cors'}).then(response => response.json()).then(json => {
-      alert("HEY");
+      console.log(json);
     });
 
   }

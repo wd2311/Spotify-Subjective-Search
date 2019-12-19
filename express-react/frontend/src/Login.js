@@ -13,36 +13,35 @@ export class Login extends React.Component {
     this.userPassword = "";
   }
 
-  handleLogin() {
-    this.props.app.setState({page: "explore"});
+  async handleLogin() {
 
     if (this.state.password==="" || this.state.username==="") {
         // empty fields
     } else {
-        // this.loginUser(this.state.username, this.state.password).then(()=>{
-        //     if (this.res.status == 200) {
-        //         // valid user/pass
-        //         console.log("Logging in.");
-
-        //         this.props.app.setState({page: "other"});
-        //         this.setState({ signedUp: null });
-        //         this.setState({ loginFailed: null });
-        //     } else {
-        //         // invalid user/pass
-        //         console.log("Invalid username or password.");
-        //         this.setState({ loginFailed: true });
-        //         this.setState({ signedUp: null });
-        //     }
-        // });
+        await fetch('http://localhost:3001/login?user=' + String(this.state.username) + '&pass=' + String(this.state.password)).then(response => response.json()).then(json => {
+            if (json.data==="success") {
+                console.log(json.data);
+                this.props.app.setState({page: "explore", user: this.state.username});
+            } else {
+                console.log(json.data);
+            }
+        });
     }  
   }
 
-  handleSignup() {
+  async handleSignup() {
     if (this.state.password==="" || this.state.username==="") {
-      
+        // empty fields
     } else {
-
-    }
+        await fetch('http://localhost:3001/signup?user=' + String(this.state.username) + '&pass=' + String(this.state.password)).then(response => response.json()).then(json => {
+            if (json.data==="success") {
+                console.log(json.data);
+                // this.props.app.setState({page: "explore", user: this.state.username});
+            } else {
+                console.log(json.data);
+            }
+        });
+    }  
   }
 
   render() {
